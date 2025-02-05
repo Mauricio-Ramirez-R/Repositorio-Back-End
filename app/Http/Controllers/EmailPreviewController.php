@@ -36,7 +36,7 @@ class EmailPreviewController extends Controller
             },
         ];
 
-        $total = 0;
+        $data´['total'] = 0;
         foreach($request['products'] as $product) {
             $subtotal = $product['price'] * $product['quantity'];
             $data['products'][] = [
@@ -45,9 +45,9 @@ class EmailPreviewController extends Controller
                 'quantity' => $product['quantity'],
                 'subtotal' => number_format($subtotal,2),
             ];
-            $total += $subtotal;
+            $data['total'] += $subtotal;
         }
-        $data['total'] = number_format($total, 2);
+        $data['total'] = number_format($data['total'], 2);
 
         return view('EmailPreview', $data);
     }
