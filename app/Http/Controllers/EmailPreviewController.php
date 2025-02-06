@@ -6,10 +6,8 @@ use Illuminate\Http\Request;
 
 class EmailPreviewController extends Controller
 {
-    public function __invoke() {
-        dd(request()->all()); // 👈 Esto imprimirá los datos y detendrá la ejecución
-
-        request()->validate([
+    public function __invoke(Request $request) {
+        $validated = $request->validate([
             'customer' => ['required', 'string'],
             'email' => ['required', 'email'],
             'payment_method' => ['required', 'in:1,2,3'],
@@ -19,6 +17,38 @@ class EmailPreviewController extends Controller
             'products.*.quantity' => ['required', 'integer', 'gte:1'],
         ]);
 
-        return view('EmailPreview', request()->all());
+        $data = [
+            'customer' => $validated['customer'],
+            'created_at' => now()->format('Y-m-d H:i'),
+            'email' => $validated['email'],
+            'order_number' => 'RB' . now()->format('Y') . now()->format('m') . '-' . rand(1, 100),
+            'payment_method' => match($validated['payment_method']) {
+                1 => 'Transferencia bancaria',
+                2 => 'Contraentrega',
+                3 => 'Tarjeta de crédito',
+            },
+            'order_status' => match($validated['payment_method']) {
+                1 => 'Pendiente de revisión',
+                2 => 'En proceso',
+                3 => 'En proceso',
+            },
+            'total' => 0,
+            'products' => []
+        ];
+
+        foreach ($validated['products'] as $product) {
+            $subtotal = $product['price'] * $product['quantity'];
+            $data['products'][] = [
+                'name' => $product['name'],
+                'price' => number_format($product['price'], 2),
+                'quantity' => $product['quantity'],
+                'subtotal' => number_format($subtotal, 2),
+            ];
+            $data['total'] += $subtotal;
+        }
+
+        $data['total'] = number_format($data['total'], 2);
+
+        return view('email-preview', compact('data'));
     }
 }
