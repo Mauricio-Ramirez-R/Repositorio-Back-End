@@ -100,15 +100,15 @@
         </div>
         <div class="content">
             <h2>Detalles del Pago</h2>
-            <p>Hola <strong>{{ $customer }}</strong>,</p>
+            <p>Hola <strong>{{$customer}}</strong>,</p>
             <p>Hemos recibido tu pago exitosamente. Estos son todos los detalles de tu compra:</p>
 
             <div class="details">
-                <p><strong>Fecha de Compra:</strong> {{ $created_at }}</p>
-                <p><strong>Correo Electrónico:</strong> {{ $email }}</p>
-                <p><strong>Número de Orden:</strong> {{ $order_number }}</p>
-                <p><strong>Método de Pago:</strong> {{ $payment_method }}</p>
-                <p><strong>Estado del Pago:</strong> {{ $order_status }}</p>
+                <p><strong>Fecha de Compra:</strong> {{ $created_at}}</p>
+                <p><strong>Correo Electrónico:</strong> {{$email}}</p>
+                <p><strong>Número de Orden:</strong> {{$order_number}}</p>
+                <p><strong>Método de Pago:</strong> {{$payment_method}}</p>
+                <p><strong>Estado del Pago:</strong> {{$order_status}}</p>
             </div>
 
             <p>A continuación verás desglosado los precios y el total del producto:</p>
@@ -124,21 +124,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($products as $product)
-                            <tr>
-                                <td>{{ $product['name'] }}</td>
-                                <td>{{ $product['quantity'] }}</td>
-                                <td>${{ $product['price'] }}</td>
-                                <td>${{ $product['subtotal'] }}</td>
-                            </tr>
-                        @endforeach
-
+                        @foreach ($products as $product)
+                                <tr>
+                                    <td>{{ $product['name'] }}</td>
+                                    <td>{{ $product['quantity'] }}</td>
+                                    <td>${{ $product['price'] }}</td>
+                                    <td>${{ $product['subtotal'] }}</td>
+                                </tr>
+                            @endforeach
                     </tbody>
                     <tfoot>
                         <tr>
                             <th colspan="3">Total</th>
                             <th>${{ $total }}</th>
-
                         </tr>
                     </tfoot>
                 </table>
@@ -149,7 +147,7 @@
             <p>¡Gracias por confiar en nosotros!</p>
         </div>
         <div class="footer">
-            <p>&copy; {{ now()->format('Y') }} Prueba. Todos los derechos reservados.</p>
+            <p>&copy; [Año Actual] [Nombre de tu Empresa]. Todos los derechos reservados.</p>
             <p><a href="[URL Política de Privacidad]">Política de Privacidad</a> | <a href="[URL Soporte]">Soporte</a></p>
         </div>
     </div>
